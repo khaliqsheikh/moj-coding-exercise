@@ -25,6 +25,10 @@ public class Account {
 		this.accountNumber = accountNumber;
 	}
 
+	public Account() {
+		super();
+	}
+
 	public int getId() {
         return id;
     }
