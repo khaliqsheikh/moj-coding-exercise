@@ -1,8 +1,6 @@
 package com.coding.example;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,7 +30,7 @@ public class MojCodingExerciseApplicationTests {
 
 	// Kept the tests quite simple
 	// Would also have added the Repository as a Mock and tested all methods.
-	// Also used POSTMAN to test functionality of RestAPI
+	// Also used POSTMAN to test functionality of RestAPI as described in Coding document
 	
 	private MockMvc mvc;
 	
