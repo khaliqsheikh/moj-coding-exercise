@@ -96,6 +96,13 @@ public class MojCodingExerciseApplicationTests {
 		.andExpect(status().isOk());	
 	}
 
+	@Test
+	public void testNotFoundWhenIdIsInvalid() throws Exception {
+		
+		mvc.perform(MockMvcRequestBuilders.delete(API_URL+"2"))
+		.andExpect(status().isNotFound());	
+	}
+	
 	private Account createAccount() {
 		return new Account(1, "Other", "Doe", "12345");
 	}

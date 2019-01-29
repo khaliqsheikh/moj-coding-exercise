@@ -1,5 +1,7 @@
 package com.coding.example.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,13 @@ public class AccountsService {
 		accountsRepository.save(account);
 	}
 
-	public void removeAccount(Integer id) {
+	public void deleteAccount(Integer id) {
 		accountsRepository.deleteById(id);
 		
+	}
+
+	public Optional<Account> findById(Integer id) {
+		return accountsRepository.findById(id);
 	}
 
 }

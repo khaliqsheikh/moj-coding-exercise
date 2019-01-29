@@ -3,9 +3,11 @@ package com.coding.example.controller;
 import static java.util.Collections.singletonMap;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,8 +43,15 @@ public class AccountsController {
 	@DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void deleteAccount(@PathVariable Integer id) {
-		accountsService.removeAccount(id);
+    public ResponseEntity<Account> deleteAccount(@PathVariable Integer id) {
+ 
+        Optional<Account> account = accountsService.findById(id);
+        if (account == null) {
+            return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
+        }
+ 
+        accountsService.deleteAccount(id);
+        return new ResponseEntity<Account>(HttpStatus.OK);
     }
 	
 }
