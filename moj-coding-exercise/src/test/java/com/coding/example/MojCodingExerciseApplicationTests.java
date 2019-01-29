@@ -2,7 +2,7 @@ package com.coding.example;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,6 +28,12 @@ import com.coding.example.repository.AccountsRepository;
 @SpringBootTest
 public class MojCodingExerciseApplicationTests {
 
+	private static final String API_URL = "/rest/accounts/json/";
+
+	// Kept the tests quite simple
+	// Would also have added the Repository as a Mock and tested all methods.
+	// Also used POSTMAN to test functionality of RestAPI
+	
 	private MockMvc mvc;
 	
 	@Autowired
@@ -50,11 +56,18 @@ public class MojCodingExerciseApplicationTests {
 	            "}";
     }
 	
+	private String createInvalidJSONAccount() {
+		
+	    return "{" +
+	            "\"firstName\":\"John\"," +
+	            "}";
+    }
+	
 	@Test
 	public void testOkAndZeroAccountsOnCallGetAllAccounts() throws Exception {
 		repository.deleteAll();
 		
-		mvc.perform(MockMvcRequestBuilders.get("/rest/accounts/json").accept(MediaType.APPLICATION_JSON))
+		mvc.perform(MockMvcRequestBuilders.get(API_URL).accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$", hasSize(0)));
 	}
@@ -63,12 +76,31 @@ public class MojCodingExerciseApplicationTests {
 	public void testOkAndOneAccountOnCallGetAllAccounts() throws Exception {
 		repository.deleteAll();
 		
-		mvc.perform(MockMvcRequestBuilders.post("/rest/accounts/json").contentType(MediaType.APPLICATION_JSON).content(createJSONAccount()))
+		mvc.perform(MockMvcRequestBuilders.post(API_URL).contentType(MediaType.APPLICATION_JSON).content(createJSONAccount()))
         .andExpect(status().isOk());
 	}
 	
+	@Test
+	public void testShouldReturnBadRequestForInvalidJSON() throws Exception {
+		repository.deleteAll();
+		
+		mvc.perform(MockMvcRequestBuilders.post(API_URL).contentType(MediaType.APPLICATION_JSON).content(createInvalidJSONAccount()))
+        .andExpect(status().isBadRequest());
+	}
 	
-	
+	@Test
+	public void testOkAndDeleteAccountUsingID() throws Exception {
+		repository.deleteAll();
+		
+		Account account = repository.save(createAccount());
+		
+		mvc.perform(MockMvcRequestBuilders.delete(API_URL+account.getId()))
+		.andExpect(status().isOk());	
+	}
+
+	private Account createAccount() {
+		return new Account(1, "Other", "Doe", "12345");
+	}
 
 }
 

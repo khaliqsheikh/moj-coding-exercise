@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.coding.example.model.Account;
 
 @Repository
-public interface AccountsRepository extends CrudRepository<Account, String>{
+public interface AccountsRepository extends CrudRepository<Account, Integer>{
 
 }

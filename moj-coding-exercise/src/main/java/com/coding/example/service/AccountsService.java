@@ -20,4 +20,9 @@ public class AccountsService {
 		accountsRepository.save(account);
 	}
 
+	public void removeAccount(Integer id) {
+		accountsRepository.deleteById(id);
+		
+	}
+
 }
